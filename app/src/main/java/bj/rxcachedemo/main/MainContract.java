@@ -9,7 +9,7 @@ public interface MainContract
 {
     interface View
     {
-        void displayData(GithubResponse githubResponse, long l);
+        void displayData(GithubResponse githubResponse, long responseTime);
 
         void displayError(boolean display);
 

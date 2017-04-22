@@ -4,7 +4,8 @@ import javax.inject.Inject;
 
 import bj.rxcachedemo.ActivityScope;
 import bj.rxcachedemo.github.GithubInteractor;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import bj.rxcachedemo.testingutils.MySchedulerProvider;
+import bj.rxcachedemo.testingutils.SystemWrapper;
 
 /**
  * Created by Josh Laird on 22/04/2017.
@@ -14,37 +15,33 @@ public class MainPresenter implements MainContract.Presenter
 {
     private MainContract.View mView;
     private GithubInteractor githubInteractor;
+    private MySchedulerProvider mySchedulerProvider;
+    private SystemWrapper systemWrapper;
 
     @Inject
-    public MainPresenter(MainContract.View mView, GithubInteractor githubInteractor)
+    public MainPresenter(MainContract.View mView, GithubInteractor githubInteractor, MySchedulerProvider mySchedulerProvider, SystemWrapper systemWrapper)
     {
         this.mView = mView;
         this.githubInteractor = githubInteractor;
+        this.mySchedulerProvider = mySchedulerProvider;
+        this.systemWrapper = systemWrapper;
     }
 
     @Override
     public void searchGithub(String query, boolean update)
     {
-        long startTime = System.currentTimeMillis();
-        mView.disableButtons(true);
-        mView.displayError(false);
+        long startTime = systemWrapper.currentTimeMillis();
         mView.displayProgressBar(true);
-        mView.displayGithubText(false);
         githubInteractor.searchGithub(query, update)
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(mySchedulerProvider.ui())
                 .subscribe(githubResponse ->
                         {
-                            mView.displayData(githubResponse, System.currentTimeMillis() - startTime);
-                            mView.disableButtons(false);
-                            mView.displayProgressBar(false);
+                            mView.displayData(githubResponse, systemWrapper.currentTimeMillis() - startTime);
                             mView.displayGithubText(true);
                         },
                         error ->
                         {
                             error.printStackTrace();
-                            mView.displayGithubText(false);
-                            mView.disableButtons(false);
-                            mView.displayProgressBar(false);
                             mView.displayError(true);
                         });
     }

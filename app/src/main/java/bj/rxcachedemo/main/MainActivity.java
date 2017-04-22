@@ -71,16 +71,21 @@ public class MainActivity extends BaseActivity implements MainContract.View
     }
 
     @Override
-    public void displayData(GithubResponse githubResponse, long requestTime)
+    public void displayData(GithubResponse githubResponse, long responseTime)
     {
-        tvGithubResponse.setText("Number of queries: " + String.valueOf(githubResponse.getTotalCount()) + "\nRequest time: " + String.valueOf(requestTime) + "ms");
+        tvGithubResponse.setText("Number of queries: " + String.valueOf(githubResponse.getTotalCount()) + "\nRequest time: " + String.valueOf(responseTime) + "ms");
     }
 
     @Override
     public void displayError(boolean display)
     {
         if (display)
+        {
             tvError.setVisibility(View.VISIBLE);
+            displayGithubText(false);
+            disableButtons(false);
+            displayProgressBar(false);
+        }
         else
             tvError.setVisibility(View.GONE);
     }
@@ -89,7 +94,12 @@ public class MainActivity extends BaseActivity implements MainContract.View
     public void displayProgressBar(boolean display)
     {
         if (display)
+        {
             pbMain.setVisibility(View.VISIBLE);
+            displayError(false);
+            displayGithubText(false);
+            disableButtons(true);
+        }
         else
             pbMain.setVisibility(View.GONE);
     }
@@ -98,7 +108,11 @@ public class MainActivity extends BaseActivity implements MainContract.View
     public void displayGithubText(boolean display)
     {
         if (display)
+        {
             tvGithubResponse.setVisibility(View.VISIBLE);
+            disableButtons(false);
+            displayProgressBar(false);
+        }
         else
             tvGithubResponse.setVisibility(View.GONE);
     }
