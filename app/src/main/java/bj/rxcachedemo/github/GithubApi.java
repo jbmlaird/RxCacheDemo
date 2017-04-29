@@ -1,7 +1,7 @@
 package bj.rxcachedemo.github;
 
 import bj.rxcachedemo.json.GithubResponse;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -13,5 +13,5 @@ import retrofit2.http.Query;
 public interface GithubApi
 {
     @GET("search/repositories")
-    Observable<GithubResponse> searchGithub(@Query("q") String query);
+    Single<GithubResponse> searchGithub(@Query("q") String query);
 }

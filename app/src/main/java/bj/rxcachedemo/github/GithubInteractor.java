@@ -8,7 +8,7 @@ import bj.rxcachedemo.ActivityScope;
 import bj.rxcachedemo.cache.CacheProviders;
 import bj.rxcachedemo.json.GithubResponse;
 import bj.rxcachedemo.testingutils.MySchedulerProvider;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
 import io.rx_cache2.internal.RxCache;
@@ -40,7 +40,7 @@ public class GithubInteractor
                 .using(CacheProviders.class);
     }
 
-    public Observable<GithubResponse> searchGithub(String query, boolean update)
+    public Single<GithubResponse> searchGithub(String query, boolean update)
     {
         return cacheProviders.searchGithub(githubApi.searchGithub(query), new DynamicKey(query), new EvictDynamicKey(update))
                 .observeOn(mySchedulerProvider.io())

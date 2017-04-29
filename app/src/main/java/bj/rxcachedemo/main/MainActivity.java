@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity implements MainContract.View
     @Override
     public void displayData(GithubResponse githubResponse, long responseTime)
     {
-        tvGithubResponse.setText("Number of queries: " + String.valueOf(githubResponse.getTotalCount()) + "\nRequest time: " + String.valueOf(responseTime) + "ms");
+        tvGithubResponse.setText("Number of results: " + String.valueOf(githubResponse.getTotalCount()) + "\nRequest time: " + String.valueOf(responseTime) + "ms");
     }
 
     @Override
